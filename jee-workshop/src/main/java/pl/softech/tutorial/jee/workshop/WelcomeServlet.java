@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pl.softech.tutorial.jee.workshop;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterators;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.WebInitParam;
@@ -40,10 +44,58 @@ public class WelcomeServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet WelcomeServlet</title>");            
+            out.println("<title>Servlet WelcomeServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet WelcomeServlet at " + request.getContextPath() + "</h1>");
+            out.println(new Date());
+            out.println("</br>" + getServletConfig().getInitParameter("email"));
+
+            out.println("</br>");
+
+            String param1 = request.getParameter("param1");
+            String[] params1 = request.getParameterValues("param1");
+            String param2 = request.getParameter("param2");
+
+            out.println("<ul>");
+            out.println("<li>param1=" + param1 + "</li>");
+            out.println("<li>param2=" + param2 + "</li>");
+
+            out.println("</ul>");
+
+            out.println("<h1>Request parameters</h1>");
+            out.println("<ul>");
+            for (Enumeration<String> e = request.getParameterNames(); e.hasMoreElements();) {
+                String paramName = e.nextElement();
+                out.println("<li>" + paramName + "=" + request.getParameter(paramName) + "</li>");
+            }
+
+            out.println("</ul>");
+
+            out.println("<h1>Request parameters by Map</h1>");
+            out.println("<ul>");
+            for (Map.Entry<String, String[]> e : request.getParameterMap().entrySet()) {
+
+//                out.println("<li>" + e.getKey() + "=");
+//                out.println(Joiner.on(", ").join(e.getValue()));
+//                out.println("</li>");
+                out.println(String.format("<li>%s = %s</li>", e.getKey(), Joiner.on(", ").join(e.getValue())));
+
+            }
+
+            out.println("</ul>");
+
+            out.println("<h1>Request headers</h1>");
+            out.println("<ul>");
+
+            for (Enumeration<String> e = request.getHeaderNames(); e.hasMoreElements();) {
+                String paramName = e.nextElement();
+                out.println(String.format("<li>%s: [%s]</li>", paramName,
+                        Joiner.on(", ").join(Iterators.forEnumeration(request.getHeaders(paramName)))));
+            }
+            
+            out.println("</ul>");
+
             out.println("</body>");
             out.println("</html>");
         }
