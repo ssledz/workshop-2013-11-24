@@ -48,42 +48,9 @@ public class AddUserController extends HttpServlet {
         }
 
         users.add(user);
+        
+        request.getRequestDispatcher("/listusers").forward(request, response);
 
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddUserController</title>");
-            out.println("</head>");
-            out.println("<body>");
-
-            out.println("<table border='1'>");
-            out.println("<tr>");
-            out.println("<th>UserName</th>");
-            out.println("<th>FirstName</th>");
-            out.println("<th>LastName</th>");
-            out.println("<th>Email</th>");
-            out.println("<th>Password</th>");
-            out.println("");
-            out.println("");
-            out.println("</tr>");
-            for (User u : users) {
-
-                out.println("<tr>");
-                out.println(String.format("<td>%s</td>", u.getUserName()));
-                out.println(String.format("<td>%s</td>", u.getFirstName()));
-                out.println(String.format("<td>%s</td>", u.getLastName()));
-                out.println(String.format("<td>%s</td>", u.getEmail()));
-                out.println(String.format("<td>%s</td>", u.getPassword()));
-                out.println("</tr>");
-            }
-            out.println("</table>");
-
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
