@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package pl.softech.tutorial.jee.workshop;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ssledz
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "LogoutController", urlPatterns = {"/logout"})
+public class LogoutController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,38 +32,19 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String userName = request.getParameter("userName");
-        String password = request.getParameter("password");
-
-        List<User> users = (List<User>) request.getServletContext().getAttribute("users");
-
-        User logged = null;
-        if (userName != null && password != null) {
-            for (User user : users) {
-
-                if (userName.equals(user.getUserName()) && password.equals(user.getPassword())) {
-                    request.getSession().setAttribute("logged", user);
-                    logged = user;
-                    break;
-                }
-            }
-        }
-
+        
+        request.getSession().removeAttribute("logged");
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet LogoutController</title>");            
             out.println("</head>");
             out.println("<body>");
-            if(logged != null) {
-                out.println(logged.getFirstName() + " you are logged in");
-            } else {
-                out.println("Login or password are incorrect");
-            }
+            out.println("<h1>You are logout</h1>");
             out.println("</body>");
             out.println("</html>");
         }
